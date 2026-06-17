@@ -1,0 +1,3 @@
+﻿dumetal-deploy/
+*.webp
+!assets/img/*.webp
