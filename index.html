@@ -39,8 +39,8 @@
     <!-- =================== HERO VIDÉO =================== -->
     <section id="hero" class="relative min-h-[100svh] w-full flex items-center justify-center overflow-hidden">
         <div class="hero-accent-line" aria-hidden="true"></div>
-        <video class="hero-video" autoplay muted loop playsinline preload="auto"
-            poster="assets/img/hero-brut.jpg" aria-hidden="true">
+        <video class="hero-video" autoplay muted loop playsinline webkit-playsinline preload="auto"
+            poster="assets/img/hero-brut.jpg" aria-hidden="true" disablepictureinpicture>
             <source src="assets/hero-conteneurs.mp4" type="video/mp4" />
         </video>
         <div class="hero-overlay" aria-hidden="true"></div>
@@ -226,6 +226,24 @@
     </section>
 
     <div id="site-footer"></div>
+    <script>
+        // Lecture vidéo hero : forcer l'autoplay mobile (muted + playsinline) avec relance au 1er contact.
+        (function () {
+            var v = document.querySelector('.hero-video');
+            if (!v) return;
+            v.muted = true; v.defaultMuted = true; v.setAttribute('muted', '');
+            var tryPlay = function () { var p = v.play(); if (p && p.catch) p.catch(function () {}); };
+            tryPlay();
+            v.addEventListener('loadeddata', tryPlay);
+            v.addEventListener('canplay', tryPlay);
+            ['touchstart', 'click', 'scroll'].forEach(function (ev) {
+                document.addEventListener(ev, function handler() {
+                    tryPlay();
+                    document.removeEventListener(ev, handler);
+                }, { once: true, passive: true });
+            });
+        })();
+    </script>
     <script src="main.js" defer></script>
 </body>
 </html>
