@@ -122,6 +122,12 @@ const LOGO = `<span class="inline-flex items-center gap-2.5">
         const before = ba.querySelector('.ba-before');
         const handle = ba.querySelector('.ba-handle');
         if (!before || !handle) return;
+        // L'image "avant" doit faire la largeur complète du slider (et non celle du calque rogné)
+        // pour rester à la même échelle que l'image "après".
+        const beforeImg = before.querySelector('img');
+        const sizeImg = function () { if (beforeImg) beforeImg.style.width = ba.getBoundingClientRect().width + 'px'; };
+        sizeImg();
+        window.addEventListener('resize', sizeImg);
         const setPos = (clientX) => {
             const rect = ba.getBoundingClientRect();
             let pct = ((clientX - rect.left) / rect.width) * 100;
