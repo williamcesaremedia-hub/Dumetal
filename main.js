@@ -74,7 +74,7 @@ const LOGO = `<span class="inline-flex items-center gap-2.5">
         <div class="max-w-7xl mx-auto px-5 md:px-6 py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
             <div class="md:col-span-2">
                 <a href="index.html" class="inline-flex items-center mb-4">${LOGO}</a>
-                <p class="text-[var(--muted)] text-sm leading-relaxed max-w-md">DUMETAL — vente, location et aménagement sur mesure de conteneurs maritimes. Livraison par camion grue partout en France, devis sous 24h.</p>
+                <p class="text-[var(--muted)] text-sm leading-relaxed max-w-md">DUMETAL — vente, location et aménagement sur mesure de conteneurs maritimes. Livraison par camion grue partout en Île-de-France, devis sous 24h.</p>
             </div>
             <div>
                 <h4 class="font-bold mb-3 text-sm uppercase tracking-wide">Services</h4>
@@ -94,7 +94,7 @@ const LOGO = `<span class="inline-flex items-center gap-2.5">
         <div class="border-t border-[var(--line)]">
             <div class="max-w-7xl mx-auto px-5 md:px-6 py-5 text-xs text-[var(--muted)] flex flex-col sm:flex-row gap-2 justify-between">
                 <span>© <span id="year"></span> DUMETAL — Containers aménagés. Tous droits réservés.</span>
-                <span>Livraison France métropolitaine · Devis gratuit sous 24h</span>
+                <span>Livraison en Île-de-France · Devis gratuit sous 24h</span>
             </div>
         </div>
     </footer>`;
