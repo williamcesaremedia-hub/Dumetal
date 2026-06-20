@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://williamcesaremedia-hub.github.io/Dumetal/sitemap.xml
