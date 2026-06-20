@@ -30,7 +30,7 @@ const FALLBACK_EMAIL = 'contact@dumetal.fr';
     if (!form) return;
 
     const steps       = Array.from(form.querySelectorAll('.form-step'));
-    const totalSteps  = 4; // L'étape 5 est la confirmation
+    const totalSteps  = 6; // L'étape 7 est la confirmation
     const prevBtn     = document.getElementById('prev-btn');
     const nextBtn     = document.getElementById('next-btn');
     const submitBtn   = document.getElementById('submit-btn');
@@ -43,9 +43,11 @@ const FALLBACK_EMAIL = 'contact@dumetal.fr';
 
     const stepNames = {
         1: 'Votre besoin',
-        2: 'Taille souhaitée',
-        3: 'Livraison',
-        4: 'Vos coordonnées',
+        2: 'Usage prévu',
+        3: 'Taille souhaitée',
+        4: 'Options & finitions',
+        5: 'Lieu & projet',
+        6: 'Vos coordonnées',
     };
 
     let currentStep = 1;
@@ -176,7 +178,7 @@ const FALLBACK_EMAIL = 'contact@dumetal.fr';
     form.querySelectorAll('.choice-card input[type="radio"]').forEach(radio => {
         radio.addEventListener('change', () => {
             clearError();
-            if ((currentStep === 1 || currentStep === 2) && radio.checked) {
+            if ((currentStep === 1 || currentStep === 3) && radio.checked) {
                 setTimeout(() => {
                     if (currentStep < totalSteps) { currentStep++; showStep(currentStep); }
                 }, 220);
@@ -209,7 +211,9 @@ const FALLBACK_EMAIL = 'contact@dumetal.fr';
             window.dataLayer.push({
                 event: 'generate_lead_container',
                 lead_need_type: data.need_type,
+                lead_usage: data.usage,
                 lead_size: data.size,
+                lead_options: data.options,
                 lead_status: data.status,
                 lead_postal_code: data.postal_code,
             });
@@ -229,6 +233,12 @@ const FALLBACK_EMAIL = 'contact@dumetal.fr';
         const fd = new FormData(form);
         const data = {};
         fd.forEach((value, key) => { data[key] = value; });
+
+        // Champs à choix multiples (cases à cocher)
+        const usages  = fd.getAll('usage');
+        const options = fd.getAll('options');
+        data.usage   = usages.length  ? usages.join(', ')  : '-';
+        data.options = options.length ? options.join(', ') : '-';
 
         data.source       = 'site-conteneurs-maritimes';
         data.submitted_at = new Date().toISOString();
@@ -258,15 +268,19 @@ const FALLBACK_EMAIL = 'contact@dumetal.fr';
     function sendViaMailto(data) {
         const subject = encodeURIComponent(`Demande de devis conteneur — ${data.name || 'Client'}`);
         const body = encodeURIComponent(
-`NOUVELLE DEMANDE DE DEVIS — CONTENEURS MARITIMES
+`NOUVELLE DEMANDE DE DEVIS — DUMETAL
 
 Besoin        : ${data.need_type || '-'}
+Usage prévu   : ${data.usage || '-'}
 Taille        : ${data.size || '-'}
+Options       : ${data.options || '-'}
 
 Code postal   : ${data.postal_code || '-'}
 Ville         : ${data.city || '-'}
 Accès terrain : ${data.access || '-'}
 Type terrain  : ${data.ground_type || '-'}
+Budget        : ${data.budget || '-'}
+Délai         : ${data.timeline || '-'}
 
 Statut        : ${data.status || '-'}
 Nom / Société : ${data.name || '-'}

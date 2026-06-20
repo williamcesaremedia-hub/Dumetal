@@ -22,7 +22,7 @@
         <div class="relative max-w-7xl mx-auto px-5 md:px-6 text-center">
             <span class="eyebrow mb-4"><span class="dot"></span>Devis gratuit sous 24h</span>
             <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-black mt-4 mb-4 leading-tight">Votre devis personnalisé</h1>
-            <p class="text-[var(--muted)] text-lg max-w-2xl mx-auto">Quatre étapes rapides pour recevoir une proposition chiffrée, claire et sans engagement.</p>
+            <p class="text-[var(--muted)] text-lg max-w-2xl mx-auto">Quelques étapes rapides pour configurer votre projet et recevoir une proposition chiffrée, claire et sans engagement.</p>
         </div>
     </section>
 
@@ -31,26 +31,42 @@
             <div class="rounded-3xl border border-[var(--line)] bg-white p-6 md:p-10 shadow-[0_30px_80px_-40px_rgba(31,36,33,0.5)]">
                 <div class="mb-9">
                     <div class="flex items-center justify-between text-xs text-[var(--muted)] mb-3 tracking-[0.12em] uppercase font-semibold">
-                        <span id="step-label">Étape 1 sur 4 — Votre besoin</span>
-                        <span id="step-counter">1 / 4</span>
+                        <span id="step-label">Étape 1 sur 6 — Votre besoin</span>
+                        <span id="step-counter">1 / 6</span>
                     </div>
                     <div class="h-1.5 w-full bg-[var(--bg-alt)] rounded-full overflow-hidden">
-                        <div id="progress-bar" class="h-full bg-green transition-all duration-500" style="width:25%;"></div>
+                        <div id="progress-bar" class="h-full bg-green transition-all duration-500" style="width:16.6%;"></div>
                     </div>
                 </div>
 
                 <form id="quote-form" novalidate>
-                    <!-- STEP 1 -->
+                    <!-- STEP 1 — Besoin -->
                     <div class="form-step active" data-step="1">
-                        <label class="form-label mb-4">Quel est votre besoin ? *</label>
+                        <label class="form-label mb-4">Quel est votre projet ? *</label>
                         <div class="choice-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
-                            <label class="choice-card"><input type="radio" name="need_type" value="Achat conteneur brut" required /><span class="choice-title">Achat de conteneur brut</span><span class="choice-sub">Stockage, transport, base de projet</span></label>
-                            <label class="choice-card"><input type="radio" name="need_type" value="Conteneur aménagé" required /><span class="choice-title">Conteneur aménagé</span><span class="choice-sub">Bureau, local, studio, pop-up</span></label>
+                            <label class="choice-card"><input type="radio" name="need_type" value="Conteneur aménagé clé en main" required /><span class="choice-title">Conteneur aménagé clé en main</span><span class="choice-sub">Modèle fini, prêt à l'emploi</span></label>
+                            <label class="choice-card"><input type="radio" name="need_type" value="Transformation / aménagement sur mesure" required /><span class="choice-title">Transformation sur mesure</span><span class="choice-sub">Projet 100% personnalisé</span></label>
                             <label class="choice-card"><input type="radio" name="need_type" value="Location" required /><span class="choice-title">Location</span><span class="choice-sub">Besoin temporaire</span></label>
                         </div>
                     </div>
-                    <!-- STEP 2 -->
+                    <!-- STEP 2 — Usage prévu (multi) -->
                     <div class="form-step" data-step="2">
+                        <label class="form-label mb-2">Usage prévu</label>
+                        <p class="text-sm text-[var(--muted)] mb-4">Sélectionnez un ou plusieurs usages.</p>
+                        <div class="choice-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+                            <label class="choice-card"><input type="checkbox" name="usage" value="Bureau / espace de travail" /><span class="choice-title">Bureau</span><span class="choice-sub">Espace de travail</span></label>
+                            <label class="choice-card"><input type="checkbox" name="usage" value="Atelier / local technique" /><span class="choice-title">Atelier</span><span class="choice-sub">Local technique</span></label>
+                            <label class="choice-card"><input type="checkbox" name="usage" value="Stockage / archivage" /><span class="choice-title">Stockage</span><span class="choice-sub">Archivage, matériel</span></label>
+                            <label class="choice-card"><input type="checkbox" name="usage" value="Studio / habitat" /><span class="choice-title">Studio / habitat</span><span class="choice-sub">Pièce à vivre</span></label>
+                            <label class="choice-card"><input type="checkbox" name="usage" value="Commerce / pop-up store" /><span class="choice-title">Commerce</span><span class="choice-sub">Pop-up store, kiosque</span></label>
+                            <label class="choice-card"><input type="checkbox" name="usage" value="Serre / jardin" /><span class="choice-title">Serre / jardin</span><span class="choice-sub">Culture, abri jardin</span></label>
+                            <label class="choice-card"><input type="checkbox" name="usage" value="Pool house / loisirs" /><span class="choice-title">Pool house</span><span class="choice-sub">Loisirs, détente</span></label>
+                            <label class="choice-card"><input type="checkbox" name="usage" value="Sanitaires / vestiaires" /><span class="choice-title">Sanitaires</span><span class="choice-sub">Vestiaires, WC</span></label>
+                            <label class="choice-card"><input type="checkbox" name="usage" value="Autre" /><span class="choice-title">Autre</span><span class="choice-sub">À préciser plus tard</span></label>
+                        </div>
+                    </div>
+                    <!-- STEP 3 — Taille -->
+                    <div class="form-step" data-step="3">
                         <label class="form-label mb-4">Quelle taille de conteneur ? *</label>
                         <div class="choice-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));">
                             <label class="choice-card"><input type="radio" name="size" value="Compact (~7 m² / 13 m³)" required /><span class="choice-title">Compact</span><span class="choice-sub">≈ 7 m² · 13 m³</span></label>
@@ -59,8 +75,27 @@
                             <label class="choice-card"><input type="radio" name="size" value="Je ne sais pas" required /><span class="choice-title">Je ne sais pas</span><span class="choice-sub">Conseillez-moi</span></label>
                         </div>
                     </div>
-                    <!-- STEP 3 -->
-                    <div class="form-step" data-step="3">
+                    <!-- STEP 4 — Options & finitions (multi) -->
+                    <div class="form-step" data-step="4">
+                        <label class="form-label mb-2">Options & finitions souhaitées</label>
+                        <p class="text-sm text-[var(--muted)] mb-4">Cochez tout ce qui vous intéresse — rien n'est définitif, on affine ensemble.</p>
+                        <div class="choice-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
+                            <label class="choice-card"><input type="checkbox" name="options" value="Isolation thermique & phonique" /><span class="choice-title">Isolation thermique & phonique</span></label>
+                            <label class="choice-card"><input type="checkbox" name="options" value="Électricité + éclairage LED" /><span class="choice-title">Électricité + éclairage LED</span></label>
+                            <label class="choice-card"><input type="checkbox" name="options" value="Plomberie / point d'eau" /><span class="choice-title">Plomberie / point d'eau</span></label>
+                            <label class="choice-card"><input type="checkbox" name="options" value="Chauffage / climatisation" /><span class="choice-title">Chauffage / climatisation</span></label>
+                            <label class="choice-card"><input type="checkbox" name="options" value="Baie vitrée / fenêtres" /><span class="choice-title">Baie vitrée / fenêtres</span></label>
+                            <label class="choice-card"><input type="checkbox" name="options" value="Porte(s) supplémentaire(s)" /><span class="choice-title">Porte(s) supplémentaire(s)</span></label>
+                            <label class="choice-card"><input type="checkbox" name="options" value="Bardage bois" /><span class="choice-title">Bardage bois</span></label>
+                            <label class="choice-card"><input type="checkbox" name="options" value="Revêtement de sol" /><span class="choice-title">Revêtement de sol</span></label>
+                            <label class="choice-card"><input type="checkbox" name="options" value="Peinture extérieure (couleur au choix)" /><span class="choice-title">Peinture extérieure</span><span class="choice-sub">Couleur au choix</span></label>
+                            <label class="choice-card"><input type="checkbox" name="options" value="Mobilier intégré / agencement" /><span class="choice-title">Mobilier intégré</span><span class="choice-sub">Agencement sur mesure</span></label>
+                            <label class="choice-card"><input type="checkbox" name="options" value="Toiture vitrée / végétalisée" /><span class="choice-title">Toiture vitrée / végétalisée</span></label>
+                            <label class="choice-card"><input type="checkbox" name="options" value="Bloc sanitaire (WC / douche)" /><span class="choice-title">Bloc sanitaire</span><span class="choice-sub">WC / douche</span></label>
+                        </div>
+                    </div>
+                    <!-- STEP 5 — Lieu & projet -->
+                    <div class="form-step" data-step="5">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div><label class="form-label">Code postal de livraison *</label><input type="text" name="postal_code" class="form-input" placeholder="75008" inputmode="numeric" required /></div>
                             <div><label class="form-label">Ville <span class="text-[var(--muted)] normal-case text-xs">(optionnel)</span></label><input type="text" name="city" class="form-input" placeholder="Paris" /></div>
@@ -73,10 +108,29 @@
                                 </select>
                             </div>
                             <div class="md:col-span-2"><label class="form-label">Type de terrain <span class="text-[var(--muted)] normal-case text-xs">(optionnel)</span></label><input type="text" name="ground_type" class="form-input" placeholder="Béton, stabilisé, terre, gravier, dénivelé…" /></div>
+                            <div><label class="form-label">Budget estimé <span class="text-[var(--muted)] normal-case text-xs">(optionnel)</span></label>
+                                <select name="budget" class="form-input">
+                                    <option value="">— À définir —</option>
+                                    <option value="Moins de 5 000 €">Moins de 5 000 €</option>
+                                    <option value="5 000 – 15 000 €">5 000 – 15 000 €</option>
+                                    <option value="15 000 – 30 000 €">15 000 – 30 000 €</option>
+                                    <option value="Plus de 30 000 €">Plus de 30 000 €</option>
+                                </select>
+                            </div>
+                            <div><label class="form-label">Délai souhaité <span class="text-[var(--muted)] normal-case text-xs">(optionnel)</span></label>
+                                <select name="timeline" class="form-input">
+                                    <option value="">— À définir —</option>
+                                    <option value="Dès que possible">Dès que possible</option>
+                                    <option value="Sous 1 mois">Sous 1 mois</option>
+                                    <option value="1 à 3 mois">1 à 3 mois</option>
+                                    <option value="3 à 6 mois">3 à 6 mois</option>
+                                    <option value="Plus de 6 mois">Plus de 6 mois</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <!-- STEP 4 -->
-                    <div class="form-step" data-step="4">
+                    <!-- STEP 6 — Coordonnées -->
+                    <div class="form-step" data-step="6">
                         <div class="space-y-5">
                             <div>
                                 <label class="form-label mb-3">Vous êtes : *</label>
@@ -89,7 +143,7 @@
                                 <div class="md:col-span-2"><label class="form-label">Nom & Prénom / Société *</label><input type="text" name="name" class="form-input" placeholder="Jean Martin — SARL Bâti Pro" required /></div>
                                 <div><label class="form-label">Email *</label><input type="email" name="email" class="form-input" placeholder="contact@exemple.fr" required /></div>
                                 <div><label class="form-label">Téléphone *</label><input type="tel" name="phone" class="form-input" placeholder="06 12 34 56 78" required /></div>
-                                <div class="md:col-span-2"><label class="form-label">Précisions <span class="text-[var(--muted)] normal-case text-xs">(optionnel)</span></label><textarea name="message" class="form-input min-h-[100px] resize-y" placeholder="Usage prévu, délai souhaité, contraintes…"></textarea></div>
+                                <div class="md:col-span-2"><label class="form-label">Précisions <span class="text-[var(--muted)] normal-case text-xs">(optionnel)</span></label><textarea name="message" class="form-input min-h-[100px] resize-y" placeholder="Détails du projet, contraintes particulières…"></textarea></div>
                             </div>
                             <div class="rounded-2xl border border-[var(--line)] bg-[var(--bg-alt)] p-5">
                                 <label class="flex items-start gap-3 cursor-pointer">
@@ -100,7 +154,7 @@
                         </div>
                     </div>
                     <!-- Confirmation -->
-                    <div class="form-step" data-step="5">
+                    <div class="form-step" data-step="7">
                         <div class="text-center py-10">
                             <div class="mx-auto w-16 h-16 rounded-full bg-green flex items-center justify-center mb-6">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
