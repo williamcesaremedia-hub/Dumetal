@@ -200,4 +200,99 @@ const LOGO = `<span class="inline-flex items-center gap-2.5">
         // Clic direct sur la zone pour positionner
         ba.addEventListener('click', (e) => { if (e.target.closest('.ba-handle')) return; setPos(e.clientX); });
     });
+
+    /* -------- HERO ACCUEIL : la vidéo s'ouvre au scroll --------
+       Le scroll de la page est confisqué tant que la vidéo n'est pas
+       entièrement ouverte ; chaque cran de molette/glissement fait
+       progresser l'ouverture (0 → 1) au lieu de défiler. */
+    const seHero = document.querySelector('[data-se-hero]');
+    if (seHero) {
+        const seMedia = seHero.querySelector('[data-se-media]');
+        const seBg = seHero.querySelector('[data-se-bg]');
+        const seVeil = seHero.querySelector('[data-se-veil]');
+        const seContent = seHero.querySelector('[data-se-content]');
+        const seLeft = seHero.querySelectorAll('[data-se-left]');
+        const seRight = seHero.querySelectorAll('[data-se-right]');
+
+        let progress = 0;
+        let expanded = false;
+        let touchY = 0;
+
+        const isMobile = () => window.innerWidth < 768;
+
+        const render = () => {
+            const m = isMobile();
+            seMedia.style.width = (300 + progress * (m ? 650 : 1250)) + 'px';
+            seMedia.style.height = (400 + progress * (m ? 200 : 400)) + 'px';
+            const tx = progress * (m ? 180 : 150);
+            seLeft.forEach(el => { el.style.transform = 'translateX(-' + tx + 'vw)'; });
+            seRight.forEach(el => { el.style.transform = 'translateX(' + tx + 'vw)'; });
+            seBg.style.opacity = String(1 - progress);
+            seVeil.style.opacity = String(0.5 - progress * 0.3);
+        };
+
+        const setProgress = (value) => {
+            progress = Math.min(Math.max(value, 0), 1);
+            render();
+            if (progress >= 1) {
+                expanded = true;
+                document.body.classList.remove('se-lock');
+                seContent.classList.add('is-visible');
+            } else if (progress < 0.75) {
+                seContent.classList.remove('is-visible');
+            }
+        };
+
+        const collapse = () => {
+            expanded = false;
+            document.body.classList.add('se-lock');
+        };
+
+        const onWheel = (e) => {
+            if (expanded) {
+                if (e.deltaY < 0 && window.scrollY <= 5) { collapse(); e.preventDefault(); }
+                return;
+            }
+            e.preventDefault();
+            setProgress(progress + e.deltaY * 0.0009);
+        };
+
+        const onTouchStart = (e) => { touchY = e.touches[0].clientY; };
+        const onTouchMove = (e) => {
+            if (!touchY) return;
+            const y = e.touches[0].clientY;
+            const delta = touchY - y;
+            if (expanded) {
+                if (delta < -20 && window.scrollY <= 5) { collapse(); e.preventDefault(); }
+                return;
+            }
+            e.preventDefault();
+            // Remontée plus sensible que la descente, sinon le retour est laborieux au doigt.
+            setProgress(progress + delta * (delta < 0 ? 0.008 : 0.005));
+            touchY = y;
+        };
+        const onTouchEnd = () => { touchY = 0; };
+
+        const onKey = (e) => {
+            if (expanded) return;
+            if (['ArrowDown', 'PageDown', 'End', 'Tab', ' ', 'Spacebar', 'Enter'].indexOf(e.key) !== -1) {
+                setProgress(1);
+            }
+        };
+
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduced || window.location.hash) {
+            setProgress(1);
+        } else {
+            document.body.classList.add('se-lock');
+            render();
+            window.scrollTo(0, 0);
+            window.addEventListener('wheel', onWheel, { passive: false });
+            window.addEventListener('touchstart', onTouchStart, { passive: true });
+            window.addEventListener('touchmove', onTouchMove, { passive: false });
+            window.addEventListener('touchend', onTouchEnd);
+            window.addEventListener('keydown', onKey);
+        }
+        window.addEventListener('resize', render);
+    }
 })();

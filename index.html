@@ -43,31 +43,53 @@
 <body class="font-sans" data-page="accueil">
     <div id="site-header"></div>
 
-    <!-- =================== HERO VIDÉO =================== -->
-    <section id="hero" class="relative min-h-[100svh] w-full flex items-center justify-center overflow-hidden">
+    <!-- =================== HERO — VIDÉO QUI S'OUVRE AU SCROLL =================== -->
+    <section id="hero" class="se-hero" data-se-hero>
         <div class="hero-accent-line" aria-hidden="true"></div>
-        <video class="hero-video" autoplay muted loop playsinline webkit-playsinline preload="auto"
-            poster="assets/img/hero-brut.jpg" aria-hidden="true" disablepictureinpicture>
-            <source src="assets/hero-conteneurs.mp4" type="video/mp4" />
-        </video>
-        <div class="hero-overlay" aria-hidden="true"></div>
 
-        <div class="relative z-10 container mx-auto px-5 md:px-6 pt-24 pb-20 text-center text-white">
-            <h1 class="fade-up font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-[1.08] max-w-4xl mx-auto" style="--delay:0.15s;">
-                L'avenir de vos espaces,<br /><span style="color:#9fcf4d;">transformé.</span>
-            </h1>
-            <p class="fade-up text-base sm:text-lg md:text-xl text-white/85 mb-10 leading-relaxed font-light max-w-2xl mx-auto" style="--delay:0.3s;">
-                Vente, location et aménagement sur mesure de conteneurs maritimes. Du local de stockage au bureau habitable, nous concrétisons vos projets pro et particuliers avec qualité et précision.
-            </p>
-            <div class="fade-up flex flex-col sm:flex-row items-center justify-center gap-4" style="--delay:0.45s;">
-                <a href="devis.html" class="btn btn-primary px-8 py-4 text-base">Obtenir un devis
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </a>
-                <a href="modeles.html" class="btn btn-white px-8 py-4 text-base">Voir nos conteneurs</a>
+        <div class="se-bg" data-se-bg aria-hidden="true">
+            <img src="assets/img/hero-brut.jpg" alt="" />
+            <div class="se-bg-veil"></div>
+        </div>
+
+        <div class="se-stage">
+            <div class="se-media" data-se-media>
+                <div class="se-media-inner">
+                    <video class="hero-video" autoplay muted loop playsinline webkit-playsinline preload="auto"
+                        poster="assets/img/hero-brut.jpg" aria-hidden="true" disablepictureinpicture>
+                        <source src="assets/hero-conteneurs.mp4" type="video/mp4" />
+                    </video>
+                    <div class="se-media-veil" data-se-veil></div>
+                </div>
+                <div class="se-caption">
+                    <p class="se-eyebrow" data-se-left>Vente · Location · Aménagement</p>
+                    <p class="se-hint" data-se-right>Faites défiler pour découvrir</p>
+                </div>
             </div>
-            <div class="fade-up mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs text-white/70 uppercase tracking-[0.18em]" style="--delay:0.6s;">
-                <span>Livraison camion grue</span><span class="hidden md:inline text-green-light">·</span>
-                <span>Devis sous 24h</span>
+
+            <div class="se-titlebox">
+                <h1 class="se-title">
+                    <span class="se-word" data-se-left>L'avenir</span>
+                    <span class="se-word" data-se-right>de vos espaces, transformé.</span>
+                </h1>
+            </div>
+        </div>
+
+        <div class="se-content" data-se-content>
+            <div class="max-w-3xl mx-auto text-center">
+                <p class="text-base sm:text-lg md:text-xl text-white/85 mb-10 leading-relaxed font-light">
+                    Vente, location et aménagement sur mesure de conteneurs maritimes. Du local de stockage au bureau habitable, nous concrétisons vos projets pro et particuliers avec qualité et précision.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="devis.html" class="btn btn-primary px-8 py-4 text-base">Obtenir un devis
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                    <a href="modeles.html" class="btn btn-white px-8 py-4 text-base">Voir nos conteneurs</a>
+                </div>
+                <div class="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs text-white/70 uppercase tracking-[0.18em]">
+                    <span>Livraison camion grue</span><span class="hidden md:inline text-green-light">·</span>
+                    <span>Devis sous 24h</span>
+                </div>
             </div>
         </div>
     </section>
