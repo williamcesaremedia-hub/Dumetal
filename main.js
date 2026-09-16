@@ -220,15 +220,36 @@ const LOGO = `<span class="inline-flex items-center gap-2.5">
 
         const isMobile = () => window.innerWidth < 768;
 
-        // Sous 768 px la vidéo n'est jamais chargée : la carte démarre à 300x400,
-        // 4 Mo de données mobiles pour ça n'a pas de sens. Le poster prend le relais.
+        // Lecture de la vidéo du hero. Sur mobile on attend la fin du chargement de la
+        // page pour ne pas concurrencer l'image de fond (élément LCP) au premier rendu.
         const seVideo = seHero.querySelector('video[data-src]');
-        if (seVideo && !isMobile()) {
+        const attachVideo = () => {
+            if (!seVideo || seVideo.src) return;
+            // defaultMuted + attribut : iOS refuse l'autoplay si la piste n'est pas
+            // muette au moment où il évalue la lecture, la propriété seule ne suffit pas.
+            seVideo.muted = true;
+            seVideo.defaultMuted = true;
+            seVideo.setAttribute('muted', '');
             seVideo.preload = 'auto';
             seVideo.src = seVideo.dataset.src;
             seVideo.load();
-            const played = seVideo.play();
-            if (played && played.catch) played.catch(() => {});
+            const tryPlay = () => {
+                if (!seVideo.paused) return;
+                const played = seVideo.play();
+                if (played && played.catch) played.catch(() => {});
+            };
+            tryPlay();
+            // Relances permanentes : iOS en mode economie d'energie refuse la lecture
+            // jusqu'au premier geste, et ce geste peut arriver a n'importe quel moment.
+            seVideo.addEventListener('loadeddata', tryPlay);
+            seVideo.addEventListener('canplay', tryPlay);
+            ['touchstart', 'click'].forEach(ev => {
+                document.addEventListener(ev, tryPlay, { passive: true });
+            });
+        };
+        if (seVideo) {
+            if (!isMobile() || document.readyState === 'complete') attachVideo();
+            else window.addEventListener('load', attachVideo, { once: true });
         }
 
         const render = () => {

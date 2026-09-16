@@ -55,8 +55,8 @@
         <div class="se-stage">
             <div class="se-media" data-se-media>
                 <div class="se-media-inner">
-                    <!-- Pas de <source> : main.js n'attache la vidéo qu'au-dessus de 768 px.
-                         Sous ce seuil, le poster fait tout le travail (4 Mo economises en 4G). -->
+                    <!-- Pas de <source> : main.js attache la vidéo et pilote la lecture
+                         (autoplay iOS, relances). Le poster couvre le temps de chargement. -->
                     <video class="hero-video" autoplay muted loop playsinline webkit-playsinline preload="none"
                         data-src="assets/hero-conteneurs-web.mp4" poster="assets/img/hero-brut.jpg"
                         aria-hidden="true" disablepictureinpicture></video>
@@ -301,24 +301,6 @@
     </section>
 
     <div id="site-footer"></div>
-    <script>
-        // Lecture vidéo hero : forcer l'autoplay mobile (muted + playsinline) avec relance au 1er contact.
-        (function () {
-            var v = document.querySelector('.hero-video');
-            if (!v) return;
-            v.muted = true; v.defaultMuted = true; v.setAttribute('muted', '');
-            var tryPlay = function () { var p = v.play(); if (p && p.catch) p.catch(function () {}); };
-            tryPlay();
-            v.addEventListener('loadeddata', tryPlay);
-            v.addEventListener('canplay', tryPlay);
-            ['touchstart', 'click', 'scroll'].forEach(function (ev) {
-                document.addEventListener(ev, function handler() {
-                    tryPlay();
-                    document.removeEventListener(ev, handler);
-                }, { once: true, passive: true });
-            });
-        })();
-    </script>
     <script src="main.js" defer></script>
 </body>
 </html>
