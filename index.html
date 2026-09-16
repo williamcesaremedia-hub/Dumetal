@@ -48,17 +48,18 @@
         <div class="hero-accent-line" aria-hidden="true"></div>
 
         <div class="se-bg" data-se-bg aria-hidden="true">
-            <img src="assets/img/hero-brut.jpg" alt="" />
+            <img src="assets/img/hero-brut.jpg" alt="" fetchpriority="high" decoding="async" />
             <div class="se-bg-veil"></div>
         </div>
 
         <div class="se-stage">
             <div class="se-media" data-se-media>
                 <div class="se-media-inner">
-                    <video class="hero-video" autoplay muted loop playsinline webkit-playsinline preload="auto"
-                        poster="assets/img/hero-brut.jpg" aria-hidden="true" disablepictureinpicture>
-                        <source src="assets/hero-conteneurs.mp4" type="video/mp4" />
-                    </video>
+                    <!-- Pas de <source> : main.js n'attache la vidéo qu'au-dessus de 768 px.
+                         Sous ce seuil, le poster fait tout le travail (4 Mo economises en 4G). -->
+                    <video class="hero-video" autoplay muted loop playsinline webkit-playsinline preload="none"
+                        data-src="assets/hero-conteneurs-web.mp4" poster="assets/img/hero-brut.jpg"
+                        aria-hidden="true" disablepictureinpicture></video>
                     <div class="se-media-veil" data-se-veil></div>
                 </div>
                 <div class="se-caption">
@@ -188,10 +189,10 @@
         <div class="max-w-7xl mx-auto px-5 md:px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div class="ba" aria-label="Comparatif avant / après transformation d'un conteneur">
                 <div class="ba-layer ba-after">
-                    <img src="assets/img/transfo-apres.png" alt="Conteneur maritime transformé en atelier de jardin avec façade vitrée" loading="lazy" />
+                    <img src="assets/img/transfo-apres.webp" alt="Conteneur maritime transformé en atelier de jardin avec façade vitrée" loading="lazy" />
                 </div>
                 <div class="ba-layer ba-before">
-                    <img src="assets/img/transfo-avant.png" alt="Conteneur maritime brut avant transformation" loading="lazy" />
+                    <img src="assets/img/transfo-avant.webp" alt="Conteneur maritime brut avant transformation" loading="lazy" />
                 </div>
                 <span class="ba-tag ba-tag-before">Avant</span>
                 <span class="ba-tag ba-tag-after">Après</span>

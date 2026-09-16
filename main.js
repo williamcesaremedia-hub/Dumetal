@@ -220,6 +220,17 @@ const LOGO = `<span class="inline-flex items-center gap-2.5">
 
         const isMobile = () => window.innerWidth < 768;
 
+        // Sous 768 px la vidéo n'est jamais chargée : la carte démarre à 300x400,
+        // 4 Mo de données mobiles pour ça n'a pas de sens. Le poster prend le relais.
+        const seVideo = seHero.querySelector('video[data-src]');
+        if (seVideo && !isMobile()) {
+            seVideo.preload = 'auto';
+            seVideo.src = seVideo.dataset.src;
+            seVideo.load();
+            const played = seVideo.play();
+            if (played && played.catch) played.catch(() => {});
+        }
+
         const render = () => {
             const m = isMobile();
             seMedia.style.width = (300 + progress * (m ? 650 : 1250)) + 'px';
