@@ -51,6 +51,7 @@ const FALLBACK_EMAIL = 'dumetallimay@gmail.com';
     };
 
     let currentStep = 1;
+    const openedAt = Date.now();
 
     /* -------- Navigation entre les étapes -------- */
     function showStep(step) {
@@ -198,6 +199,15 @@ const FALLBACK_EMAIL = 'dumetallimay@gmail.com';
         e.preventDefault();
         if (!validateStep(currentStep)) return;
 
+        // Anti-spam : champ piege rempli, ou formulaire boucle en moins de 3 s.
+        // On affiche la confirmation sans rien envoyer : inutile de signaler
+        // au robot qu'il a ete repere.
+        if (form.website.value || Date.now() - openedAt < 3000) {
+            currentStep = totalSteps + 1;
+            showStep(currentStep);
+            return;
+        }
+
         submitBtn.disabled = true;
         submitText.textContent = 'Envoi en cours…';
 
@@ -233,6 +243,7 @@ const FALLBACK_EMAIL = 'dumetallimay@gmail.com';
         const fd = new FormData(form);
         const data = {};
         fd.forEach((value, key) => { data[key] = value; });
+        delete data.website;   // champ piege, jamais transmis
 
         // Champs à choix multiples (cases à cocher)
         const usages  = fd.getAll('usage');

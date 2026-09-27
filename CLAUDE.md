@@ -26,8 +26,8 @@ To change the menu, footer, logo, or contact details, edit the `NAV`, `SERVICES`
 There is no config file; these live inline and must be changed in **every** listed place:
 
 - **`WEBHOOK_URL` + `FALLBACK_EMAIL`** — in [form.js](form.js) **and** in the inline `<script>` of [contact.html](contact.html) (the two forms are independent).
-- **GA4 measurement ID `G-XXXXXXXXXX`** — hard-coded in the `<head>` of every `*.html` page.
-- **SEO meta** — canonical / Open Graph / Twitter tags are per-page in each `<head>`; the base URL is the GitHub Pages path `https://williamcesaremedia-hub.github.io/Dumetal/`. New pages must also be added to [sitemap.xml](sitemap.xml).
+- **GA4 measurement ID `G-XXXXXXXXXX`** — now a single `GA_ID` constant at the top of [main.js](main.js); no page hard-codes it. Analytics only loads after the visitor accepts the consent banner, and not at all while `GA_ID` still contains `XXXX`.
+- **SEO meta** — canonical / Open Graph / Twitter tags are per-page in each `<head>`; the base URL is the custom domain `https://conteneurdumetal.fr/` (declared by the root `CNAME` file). New pages must also be added to [sitemap.xml](sitemap.xml).
 - **Design tokens** — the palette and fonts exist twice: as CSS custom properties in `:root` of [style.css](style.css) and as `tailwind.config` in each page's `<head>`. Brand: green `#507817`, serif `Merriweather` (headings), sans `Lato` (body).
 
 ## Styling conventions
@@ -36,7 +36,7 @@ Utility classes are Tailwind (CDN); anything stateful or reusable (header, butto
 
 ## Adding a page
 
-1. Copy an existing page's `<head>` (fonts, GA4, Tailwind config, `style.css` link) and update the SEO/canonical/OG tags.
+1. Copy an existing page's `<head>` (fonts, Tailwind config, favicons, `style.css` link) and update the SEO/canonical/OG tags. Do **not** add a GA4 snippet — [main.js](main.js) injects it after consent.
 2. Set `<body data-page="...">` and add a matching entry to `NAV` (or `SERVICES`) in [main.js](main.js) if it belongs in the menu.
 3. Include the `#site-header` / `#site-footer` mount divs and load `main.js` (+ `form.js` only if the page has the quote form).
 4. Add the URL to [sitemap.xml](sitemap.xml).

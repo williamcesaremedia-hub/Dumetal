@@ -19,10 +19,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Merriweather:wght@400;700;900&display=swap" rel="stylesheet" />
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={theme:{extend:{fontFamily:{serif:['Merriweather','serif'],sans:['Lato','sans-serif']},colors:{green:{DEFAULT:'#507817',dark:'#3c5a11',light:'#6f9c22',soft:'#eef3e7'}}}}};</script>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon-180.png" />
+    <link rel="manifest" href="site.webmanifest" />
     <link rel="stylesheet" href="style.css" />
 </head>
 <body class="font-sans" data-page="contact">
@@ -63,6 +65,13 @@
                 <div class="rounded-3xl border border-[var(--line)] bg-white p-6 md:p-9 shadow-[0_30px_80px_-40px_rgba(31,36,33,0.5)]">
                     <h2 class="font-serif text-2xl font-black mb-6">Envoyez-nous un message</h2>
                     <form id="contact-form" novalidate>
+                        <!-- Piege a robots : invisible et hors tabulation. Un humain ne le
+                             remplit jamais ; un robot remplit tous les champs. Rempli = rejet. -->
+                        <div class="hp-field" aria-hidden="true">
+                            <label for="hp-contact">Ne pas remplir ce champ</label>
+                            <input type="text" id="hp-contact" name="website" tabindex="-1" autocomplete="off" />
+                        </div>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div class="md:col-span-2"><label class="form-label">Nom / Société *</label><input type="text" name="name" class="form-input" placeholder="Jean Martin" required /></div>
                             <div><label class="form-label">Email *</label><input type="email" name="email" class="form-input" placeholder="contact@exemple.fr" required /></div>
@@ -95,12 +104,22 @@
             const errBox = document.getElementById('contact-error');
             const okBox = document.getElementById('contact-success');
             const btn = document.getElementById('contact-submit');
+            const openedAt = Date.now();
 
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 errBox.classList.add('hidden');
                 const fd = new FormData(form);
                 const data = Object.fromEntries(fd.entries());
+
+                // Anti-spam : champ piege rempli ou envoi en moins de 3 s.
+                // On simule la reussite plutot que de signaler la detection.
+                if (data.website || Date.now() - openedAt < 3000) {
+                    form.reset(); okBox.classList.remove('hidden');
+                    btn.disabled = true; btn.textContent = 'Message envoyé';
+                    return;
+                }
+                delete data.website;
                 if (!data.name || !data.email || !data.message || !form.rgpd.checked) {
                     errBox.textContent = 'Merci de remplir les champs obligatoires et d\'accepter le RGPD.';
                     errBox.classList.remove('hidden');

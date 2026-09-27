@@ -13,6 +13,10 @@ const NAV = [
     { href: 'contact.html',      label: 'Contact',                 key: 'contact' },
 ];
 
+/* Identifiant GA4 : unique endroit a modifier pour tout le site.
+   Tant qu'il contient XXXX, aucune mesure n'est chargee. */
+const GA_ID = 'G-XXXXXXXXXX';
+
 const CONTACT = {
     email: 'dumetallimay@gmail.com',
     phoneDisplay: '07 49 89 90 77',
@@ -99,8 +103,13 @@ const LOGO = `<span class="inline-flex items-center gap-2.5">
         </div>
         <div class="border-t border-[var(--line)]">
             <div class="max-w-7xl mx-auto px-5 md:px-6 py-5 text-xs text-[var(--muted)] flex flex-col sm:flex-row gap-2 justify-between">
-                <span>© <span id="year"></span> DUMETAL — Containers aménagés. Tous droits réservés. · <a href="mentions-legales.html" class="hover:text-[var(--green)] transition">Mentions légales</a></span>
-                <span>Livraison en Île-de-France · Devis gratuit sous 48h</span>
+                <span>© <span id="year"></span> DUMETAL — Containers aménagés. Tous droits réservés.</span>
+                <span class="flex flex-wrap gap-x-3 gap-y-1">
+                    <a href="mentions-legales.html" class="hover:text-[var(--green)] transition">Mentions légales</a>
+                    <a href="confidentialite.html" class="hover:text-[var(--green)] transition">Confidentialité</a>
+                    <a href="cgv.html" class="hover:text-[var(--green)] transition">CGV</a>
+                    <span>Livraison en Île-de-France · Devis 48h</span>
+                </span>
             </div>
         </div>
     </footer>`;
@@ -160,6 +169,77 @@ const LOGO = `<span class="inline-flex items-center gap-2.5">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         </a>`;
     document.body.appendChild(fab);
+
+    /* -------- Consentement cookies + mesure d'audience --------
+       Google Analytics n'est charge qu'apres acceptation explicite : sans
+       choix valide, aucun cookie de mesure n'est depose (exigence CNIL). */
+    const CONSENT_KEY = 'dumetal-consent';
+    const CONSENT_MAX_AGE = 1000 * 60 * 60 * 24 * 182;   // 6 mois
+
+    const readConsent = () => {
+        try {
+            const raw = localStorage.getItem(CONSENT_KEY);
+            if (!raw) return null;
+            const saved = JSON.parse(raw);
+            if (Date.now() - saved.at > CONSENT_MAX_AGE) {
+                localStorage.removeItem(CONSENT_KEY);
+                return null;
+            }
+            return saved.value;
+        } catch (e) {
+            // Navigation privee ou stockage bloque : on redemande, sans planter.
+            return null;
+        }
+    };
+
+    const writeConsent = (value) => {
+        try {
+            localStorage.setItem(CONSENT_KEY, JSON.stringify({ value, at: Date.now() }));
+        } catch (e) { /* stockage indisponible : le choix vaut pour la session */ }
+    };
+
+    const loadAnalytics = () => {
+        if (GA_ID.indexOf('XXXX') !== -1 || window.__gaLoaded) return;
+        window.__gaLoaded = true;
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+        document.head.appendChild(s);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', GA_ID, { anonymize_ip: true });
+    };
+
+    const showConsentBanner = () => {
+        const el = document.createElement('div');
+        el.className = 'cookie-banner';
+        el.setAttribute('role', 'dialog');
+        el.setAttribute('aria-label', "Consentement à la mesure d'audience");
+        el.innerHTML = `
+            <div class="cookie-inner">
+                <p class="cookie-text">Nous mesurons la fréquentation du site pour l'améliorer. Rien n'est déposé sans votre accord, et le site fonctionne à l'identique si vous refusez. <a href="confidentialite.html">En savoir plus</a></p>
+                <div class="cookie-actions">
+                    <button type="button" class="btn btn-outline" data-consent="refused">Refuser</button>
+                    <button type="button" class="btn btn-primary" data-consent="accepted">Accepter</button>
+                </div>
+            </div>`;
+        document.body.appendChild(el);
+        document.body.classList.add('has-consent-banner');
+        el.querySelectorAll('[data-consent]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const value = btn.dataset.consent;
+                writeConsent(value);
+                if (value === 'accepted') loadAnalytics();
+                el.remove();
+                document.body.classList.remove('has-consent-banner');
+            });
+        });
+    };
+
+    const consent = readConsent();
+    if (consent === 'accepted') loadAnalytics();
+    else if (consent === null) showConsentBanner();
 
     /* -------- Slider avant / après -------- */
     document.querySelectorAll('.ba').forEach(ba => {

@@ -779,6 +779,49 @@ body.se-lock {
 .fab-tel { background: var(--green); }
 @media (min-width: 1024px) { .fab { right: 1.5rem; bottom: 1.5rem; } }
 
+
+/* Piege a robots des formulaires. On evite display:none, que certains
+   robots savent reperer pour ignorer le champ. */
+.hp-field {
+    position: absolute;
+    left: -9999px;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+/* Bandeau de consentement. Le bouton d'appel flottant est masque tant qu'il
+   est affiche : les deux occupent le bas de l'ecran sur mobile. */
+.cookie-banner {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 70;
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -8px 30px -12px rgba(0,0,0,0.25);
+    padding: 1rem 1.25rem calc(1rem + env(safe-area-inset-bottom));
+}
+.cookie-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    align-items: flex-start;
+}
+.cookie-text { font-size: 0.9rem; line-height: 1.55; color: var(--muted); margin: 0; }
+.cookie-text a { color: var(--green); font-weight: 700; text-decoration: underline; }
+.cookie-actions { display: flex; gap: 0.6rem; width: 100%; }
+.cookie-actions .btn { flex: 1; padding: 0.7rem 1.25rem; font-size: 0.9rem; }
+body.has-consent-banner .fab { display: none; }
+@media (min-width: 768px) {
+    .cookie-inner { flex-direction: row; align-items: center; justify-content: space-between; gap: 2rem; }
+    .cookie-actions { width: auto; }
+    .cookie-actions .btn { flex: 0 0 auto; }
+}
+
 /* =================================================
    UTILITIES
    ================================================= */

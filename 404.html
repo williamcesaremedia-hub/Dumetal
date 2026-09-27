@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <base> indispensable : GitHub Pages sert cette page pour n'importe quelle
+         adresse inconnue, y compris /a/b/c. Sans elle, les liens relatifs du
+         header et du footer injectes par main.js pointeraient a cote. -->
+    <base href="/" />
+    <meta name="description" content="Cette page n'existe pas ou a été déplacée. Retrouvez nos conteneurs aménagés, la location et le devis gratuit." />
+    <meta name="robots" content="noindex, follow" />
+    <title>Page introuvable — DUMETAL</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Merriweather:wght@400;700;900&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{fontFamily:{serif:['Merriweather','serif'],sans:['Lato','sans-serif']},colors:{green:{DEFAULT:'#507817',dark:'#3c5a11',light:'#6f9c22',soft:'#eef3e7'}}}}};</script>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon-180.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body class="font-sans" data-page="404">
+    <div id="site-header"></div>
+
+    <section class="page-hero pt-28 pb-16 md:pt-36 md:pb-24">
+        <div class="relative max-w-3xl mx-auto px-5 md:px-6 text-center">
+            <span class="eyebrow mb-4"><span class="dot"></span>Erreur 404</span>
+            <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-black mt-4 mb-5 leading-tight">Cette page n'existe pas</h1>
+            <p class="text-[var(--muted)] text-lg mb-10">L'adresse est peut-être erronée, ou la page a été déplacée. Voici par où continuer.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <a href="index.html" class="btn btn-primary px-8 py-4">Retour à l'accueil</a>
+                <a href="devis.html" class="btn btn-outline px-8 py-4">Obtenir un devis</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-14 md:py-20 bg-white border-t border-[var(--line)]">
+        <div class="max-w-5xl mx-auto px-5 md:px-6">
+            <h2 class="font-serif text-2xl md:text-3xl font-black mb-8 text-center leading-tight">Les pages les plus consultées</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <a href="modeles.html" class="reass-block hover:no-underline"><h3 class="reass-title">Nos Modèles</h3><p class="reass-desc">Conteneurs de 7 à 30 m², bruts ou aménagés.</p></a>
+                <a href="location.html" class="reass-block hover:no-underline"><h3 class="reass-title">Location</h3><p class="reass-desc">Courte et longue durée, contrat flexible.</p></a>
+                <a href="realisations.html" class="reass-block hover:no-underline"><h3 class="reass-title">Réalisations</h3><p class="reass-desc">Bureaux, studios, ateliers, pool houses.</p></a>
+                <a href="faq.html" class="reass-block hover:no-underline"><h3 class="reass-title">FAQ</h3><p class="reass-desc">Permis, délais, livraison, isolation.</p></a>
+                <a href="a-propos.html" class="reass-block hover:no-underline"><h3 class="reass-title">À Propos</h3><p class="reass-desc">Qui nous sommes et comment nous travaillons.</p></a>
+                <a href="contact.html" class="reass-block hover:no-underline"><h3 class="reass-title">Contact</h3><p class="reass-desc">Téléphone, email et formulaire.</p></a>
+            </div>
+        </div>
+    </section>
+
+    <div id="site-footer"></div>
+    <script src="main.js" defer></script>
+</body>
+</html>
