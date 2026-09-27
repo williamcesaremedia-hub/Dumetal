@@ -15,7 +15,7 @@ Then open http://localhost:8080. There is no build, lint, or test step — edit 
 
 ## Architecture
 
-**Shared page chrome lives in [main.js](main.js), not in the HTML.** Each page ships only its unique `<body>` content plus two empty mount points, `<div id="site-header">` and `<div id="site-footer">`. On load, the IIFE in [main.js](main.js) replaces them with the real header/footer and also injects: the floating WhatsApp/phone buttons (`.fab`), the LocalBusiness JSON-LD, and the before/after image slider behaviour (`.ba`). It highlights the active nav link by matching `NAV[].key` against `document.body.dataset.page` — so **every page must set `<body data-page="...">`** to the right key.
+**Shared page chrome lives in [main.js](main.js), not in the HTML.** Each page ships only its unique `<body>` content plus two empty mount points, `<div id="site-header">` and `<div id="site-footer">`. On load, the IIFE in [main.js](main.js) replaces them with the real header/footer and also injects: the floating phone button (`.fab`), the LocalBusiness JSON-LD, and the before/after image slider behaviour (`.ba`). It highlights the active nav link by matching `NAV[].key` against `document.body.dataset.page` — so **every page must set `<body data-page="...">`** to the right key.
 
 To change the menu, footer, logo, or contact details, edit the `NAV`, `SERVICES`, `CONTACT`, and `LOGO` constants at the top of [main.js](main.js) — never the individual pages.
 

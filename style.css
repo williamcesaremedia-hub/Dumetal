@@ -776,7 +776,6 @@ body.se-lock {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .fab-btn:hover { transform: scale(1.08); }
-.fab-wa { background: #25d366; }
 .fab-tel { background: var(--green); }
 @media (min-width: 1024px) { .fab { right: 1.5rem; bottom: 1.5rem; } }
 

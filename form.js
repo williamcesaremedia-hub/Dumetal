@@ -19,7 +19,7 @@ const WEBHOOK_URL =
     'VOTRE_URL_WEBHOOK';
 
 // Adresse de secours si le webhook n'est pas configuré (ouvre le client mail).
-const FALLBACK_EMAIL = 'contact@dumetal.fr';
+const FALLBACK_EMAIL = 'dumetallimay@gmail.com';
 
 /* =============================================================
    LOGIQUE DU FORMULAIRE
