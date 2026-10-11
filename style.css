@@ -616,7 +616,6 @@ body.se-lock {
 }
 .acc-list li:last-child { border-bottom: none; }
 .acc-list li .muted { color: var(--muted); text-align: right; white-space: nowrap; }
-.acc-list li .price { color: var(--green-dark); font-weight: 700; white-space: nowrap; }
 .acc-opts { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .acc-opts li {
     font-size: 0.78rem;
@@ -636,6 +635,7 @@ body.se-lock {
     padding: 0.6rem 0.8rem;
     border-radius: 0 0.4rem 0.4rem 0;
 }
+.acc-note a { color: var(--green); font-weight: 700; text-decoration: underline; }
 
 /* =================================================
    AVIS CLIENTS
