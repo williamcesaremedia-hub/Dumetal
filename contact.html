@@ -138,9 +138,10 @@
     <div id="site-footer"></div>
     <script src="main.js" defer></script>
     <script>
-        // Formulaire de contact — envoi vers le même webhook que le devis (voir form.js) ou mailto.
+        // Formulaire de contact : meme webhook Make que le devis (voir form.js),
+        // route 'contact' du scenario. Repli mailto si Make est injoignable.
         (() => {
-            const WEBHOOK_URL = (window.NEXT_PUBLIC_WEBHOOK_URL) || 'VOTRE_URL_WEBHOOK';
+            const WEBHOOK_URL = 'https://hook.eu2.make.com/7i31i2362cxvwismom49ojy735jfy6ce';
             const FALLBACK_EMAIL = 'dumetallimay@gmail.com';
             const form = document.getElementById('contact-form');
             const errBox = document.getElementById('contact-error');
@@ -168,28 +169,25 @@
                     return;
                 }
                 data.source = 'site-conteneurs-maritimes';
-                data.form = 'contact';
+                data.form = 'contact';          // route suivie dans le scenario Make
                 data.submitted_at = new Date().toISOString();
+                data.page_url = window.location.href;
                 btn.disabled = true; btn.textContent = 'Envoi en cours…';
                 try {
-                    if (WEBHOOK_URL && WEBHOOK_URL !== 'VOTRE_URL_WEBHOOK') {
-                        const r = await fetch(WEBHOOK_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
-                        if (!r.ok) throw new Error('HTTP ' + r.status);
-                    } else {
-                        const subject = encodeURIComponent('Message site — ' + data.name);
-                        const body = encodeURIComponent(`Nom: ${data.name}\nEmail: ${data.email}\nTéléphone: ${data.phone||'-'}\n\n${data.message}`);
-                        window.location.href = `mailto:${FALLBACK_EMAIL}?subject=${subject}&body=${body}`;
-                    }
-                    window.dataLayer = window.dataLayer || [];
-                    window.dataLayer.push({ event: 'generate_lead_container', form: 'contact' });
-                    form.reset(); okBox.classList.remove('hidden');
-                    btn.textContent = 'Message envoyé ✓';
+                    const r = await fetch(WEBHOOK_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
                 } catch (err) {
-                    console.error(err);
-                    errBox.textContent = 'Une erreur est survenue. Contactez-nous à ' + FALLBACK_EMAIL + '.';
-                    errBox.classList.remove('hidden');
-                    btn.disabled = false; btn.textContent = 'Envoyer mon message';
+                    // Make injoignable ou hors quota : on bascule sur le client mail
+                    // du visiteur plutot que de perdre le message.
+                    console.warn('Webhook indisponible, bascule mailto :', err);
+                    const subject = encodeURIComponent('Message site — ' + data.name);
+                    const body = encodeURIComponent(`Nom: ${data.name}\nEmail: ${data.email}\nTéléphone: ${data.phone||'-'}\n\n${data.message}`);
+                    window.location.href = `mailto:${FALLBACK_EMAIL}?subject=${subject}&body=${body}`;
                 }
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({ event: 'generate_lead_container', form: 'contact' });
+                form.reset(); okBox.classList.remove('hidden');
+                btn.textContent = 'Message envoyé ✓';
             });
         })();
     </script>

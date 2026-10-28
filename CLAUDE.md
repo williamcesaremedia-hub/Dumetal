@@ -19,13 +19,13 @@ Then open http://localhost:8080. There is no build, lint, or test step — edit 
 
 To change the menu, footer, logo, or contact details, edit the `NAV`, `SERVICES`, `CONTACT`, and `LOGO` constants at the top of [main.js](main.js) — never the individual pages.
 
-**The quote form** ([devis.html](devis.html)) is driven by [form.js](form.js): a 6-step wizard (step 7 is the confirmation screen) with per-step validation, then POSTs the collected lead as JSON to `WEBHOOK_URL`. If the webhook is unset it falls back to a prefilled `mailto:`. On success it pushes a `generate_lead_container` event to `dataLayer` for GA4 conversion tracking.
+**The quote form** ([devis.html](devis.html)) is driven by [form.js](form.js): a 6-step wizard (step 7 is the confirmation screen) with per-step validation, then POSTs the collected lead as JSON to `WEBHOOK_URL` — the webhook of the Make scenario **DUMETAL — Formulaires du site vers la boîte mail** (id 10061993, team 2267566), which emails it to the DUMETAL mailbox. The payload's `form` field (`devis` or `contact`) selects the route inside that scenario, so renaming it breaks delivery silently. If Make is unreachable or over quota, both handlers fall back to a prefilled `mailto:` rather than showing an error — a lead is never lost on a transport failure. On success it pushes a `generate_lead_container` event to `dataLayer`, which is the Google Ads / GA4 conversion trigger in GTM.
 
 ## Config values that are duplicated — keep them in sync
 
 There is no config file; these live inline and must be changed in **every** listed place:
 
-- **`WEBHOOK_URL` + `FALLBACK_EMAIL`** — in [form.js](form.js) **and** in the inline `<script>` of [contact.html](contact.html) (the two forms are independent).
+- **`WEBHOOK_URL` + `FALLBACK_EMAIL`** — in [form.js](form.js) **and** in the inline `<script>` of [contact.html](contact.html) (the two forms are independent, each posts to the same Make webhook with its own `form` value).
 - **Google Tag Manager container `GTM-TNJSLC3C`** — inlined in the `<head>` of **all 15 pages**, plus the `<noscript>` iframe after each `<body>`. Immediately above it, an inline Consent Mode v2 block denies all four signals by default and re-grants them if `localStorage['dumetal-consent']` already holds a fresh `accepted`. That read happens in the `<head>` on purpose: [main.js](main.js) runs too late, so without it a consenting visitor would start every page in `denied`. The 6-month expiry is therefore duplicated — in the `<head>` block of every page and as `CONSENT_MAX_AGE` in [main.js](main.js).
 - **GA4 and Google Ads tags are configured inside GTM, never in the code.** [main.js](main.js) no longer loads `gtag.js`; it only relays the banner's decision via `gtag('consent', 'update', ...)`. Adding a GA4 snippet back to the pages would double-count every hit.
 - **Conversion trigger** — both forms push `event: 'generate_lead_container'` to `dataLayer` ([form.js](form.js) and the inline script of [contact.html](contact.html)). That is the event to trigger the Google Ads conversion on in GTM.

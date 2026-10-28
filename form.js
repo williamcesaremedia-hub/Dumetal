@@ -1,24 +1,21 @@
 /* =============================================================
    Conteneurs Maritimes — Formulaire de devis multi-étapes
    -------------------------------------------------------------
-   Envoi du lead vers un webhook (Make / Zapier / n8n / CRM…)
+   Envoi du lead vers le scénario Make qui le relaie dans la boîte DUMETAL.
    + remontée de conversion GA4 via dataLayer.push.
    ============================================================= */
 
 /* =============================================================
-   CONFIG — À RENSEIGNER
+   CONFIG
    -------------------------------------------------------------
-   Site statique : il n'y a pas de process.env côté navigateur.
-   Renseignez l'URL de votre webhook ci-dessous. En production
-   sur Vercel/Netlify, vous pouvez injecter la valeur de
-   NEXT_PUBLIC_WEBHOOK_URL au build dans cette constante.
+   Webhook du scénario Make « DUMETAL — Formulaires du site vers
+   la boîte mail ». Le champ 'form' envoyé plus bas décide de la
+   route suivie dans le scénario (devis ou contact).
    ============================================================= */
 
-const WEBHOOK_URL =
-    (typeof window !== 'undefined' && window.NEXT_PUBLIC_WEBHOOK_URL) ||
-    'VOTRE_URL_WEBHOOK';
+const WEBHOOK_URL = 'https://hook.eu2.make.com/7i31i2362cxvwismom49ojy735jfy6ce';
 
-// Adresse de secours si le webhook n'est pas configuré (ouvre le client mail).
+// Repli si Make est injoignable : ouvre le client mail du visiteur.
 const FALLBACK_EMAIL = 'dumetallimay@gmail.com';
 
 /* =============================================================
@@ -251,27 +248,27 @@ const FALLBACK_EMAIL = 'dumetallimay@gmail.com';
         data.usage   = usages.length  ? usages.join(', ')  : '-';
         data.options = options.length ? options.join(', ') : '-';
 
+        data.form         = 'devis';   // route suivie dans le scenario Make
         data.source       = 'site-conteneurs-maritimes';
         data.submitted_at = new Date().toISOString();
         data.page_url     = window.location.href;
         return data;
     }
 
-    /* -------- Envoi vers le webhook -------- */
+    /* -------- Envoi vers Make -------- */
     async function sendToWebhook(data) {
-        if (!WEBHOOK_URL || WEBHOOK_URL === 'VOTRE_URL_WEBHOOK') {
-            console.warn('Webhook non configuré — bascule vers mailto.');
-            return sendViaMailto(data);
-        }
-
-        const response = await fetch(WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-            throw new Error('Webhook responded ' + response.status);
+        try {
+            const response = await fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+            if (!response.ok) throw new Error('Webhook responded ' + response.status);
+        } catch (err) {
+            // Make injoignable ou hors quota : on bascule sur le client mail du
+            // visiteur plutot que de perdre le lead sur un message d'erreur.
+            console.warn('Webhook indisponible, bascule mailto :', err);
+            sendViaMailto(data);
         }
     }
 
