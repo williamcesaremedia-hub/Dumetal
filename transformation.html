@@ -17,10 +17,11 @@
     <meta name="twitter:description" content="Découpe, soudure, renforts, portes et ouvertures : un conteneur brut transformé selon votre projet." />
     <meta name="twitter:image" content="https://conteneurdumetal.fr/assets/img/livraison.jpg" />
 
-    <!-- Consent Mode v2 : les quatre signaux sont refuses par defaut, GTM attend
-         500 ms la decision du visiteur. Le choix deja stocke est relu ICI, avant
-         GTM : sinon un visiteur qui a accepte repartirait en "denied" a chaque
-         page. Cle de stockage partagee avec main.js. -->
+    <!-- Consent Mode v2 : les quatre signaux sont refuses par defaut, avant GTM.
+         C'est Axeptio, charge DANS le conteneur, qui envoie le 'consent update'
+         quand le visiteur choisit. Ce defaut reste code en dur ici justement
+         parce qu'Axeptio se charge apres GTM : sans ce filet, un tag pourrait
+         partir avant que le consentement soit connu. -->
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
@@ -33,17 +34,6 @@
         });
         gtag('set', 'url_passthrough', true);
         gtag('set', 'ads_data_redaction', true);
-        try {
-            var saved = JSON.parse(localStorage.getItem('dumetal-consent'));
-            if (saved && saved.value === 'accepted' && Date.now() - saved.at < 1000 * 60 * 60 * 24 * 182) {
-                gtag('consent', 'update', {
-                    ad_storage: 'granted',
-                    analytics_storage: 'granted',
-                    ad_user_data: 'granted',
-                    ad_personalization: 'granted'
-                });
-            }
-        } catch (e) { /* stockage bloque : on reste en refus */ }
     </script>
 
     <!-- Google Tag Manager -->

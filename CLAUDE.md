@@ -26,8 +26,9 @@ To change the menu, footer, logo, or contact details, edit the `NAV`, `SERVICES`
 There is no config file; these live inline and must be changed in **every** listed place:
 
 - **`WEBHOOK_URL` + `FALLBACK_EMAIL`** — in [form.js](form.js) **and** in the inline `<script>` of [contact.html](contact.html) (the two forms are independent, each posts to the same Make webhook with its own `form` value).
-- **Google Tag Manager container `GTM-TNJSLC3C`** — inlined in the `<head>` of **all 15 pages**, plus the `<noscript>` iframe after each `<body>`. Immediately above it, an inline Consent Mode v2 block denies all four signals by default and re-grants them if `localStorage['dumetal-consent']` already holds a fresh `accepted`. That read happens in the `<head>` on purpose: [main.js](main.js) runs too late, so without it a consenting visitor would start every page in `denied`. The 6-month expiry is therefore duplicated — in the `<head>` block of every page and as `CONSENT_MAX_AGE` in [main.js](main.js).
-- **GA4 and Google Ads tags are configured inside GTM, never in the code.** [main.js](main.js) no longer loads `gtag.js`; it only relays the banner's decision via `gtag('consent', 'update', ...)`. Adding a GA4 snippet back to the pages would double-count every hit.
+- **Google Tag Manager container `GTM-TNJSLC3C`** — inlined in the `<head>` of **all 15 pages**, plus the `<noscript>` iframe after each `<body>`. Immediately above it, an inline Consent Mode v2 block denies all four signals by default, with `wait_for_update: 500`, `url_passthrough` and `ads_data_redaction`.
+- **The consent UI is Axeptio, loaded inside GTM — there is no banner in this codebase.** Axeptio sends the `consent update`. The hardcoded default above is kept on purpose and must not be removed as "redundant": Axeptio loads *inside* the container, therefore after GTM itself, so without that default a tag could fire before any consent state is known. Both defaults are `denied`, so they cannot conflict.
+- **GA4 and Google Ads tags are configured inside GTM, never in the code.** [main.js](main.js) does not load `gtag.js` and holds no consent logic at all. Adding a GA4 snippet back to the pages would double-count every hit.
 - **Conversion trigger** — both forms push `event: 'generate_lead_container'` to `dataLayer` ([form.js](form.js) and the inline script of [contact.html](contact.html)). That is the event to trigger the Google Ads conversion on in GTM.
 - **SEO meta** — canonical / Open Graph / Twitter tags are per-page in each `<head>`; the base URL is the custom domain `https://conteneurdumetal.fr/` (declared by the root `CNAME` file). New pages must also be added to [sitemap.xml](sitemap.xml).
 - **Design tokens** — the palette and fonts exist twice: as CSS custom properties in `:root` of [style.css](style.css) and as `tailwind.config` in each page's `<head>`. Brand: green `#507817`, serif `Merriweather` (headings), sans `Lato` (body).
@@ -38,7 +39,7 @@ Utility classes are Tailwind (CDN); anything stateful or reusable (header, butto
 
 ## Adding a page
 
-1. Copy an existing page's `<head>` (fonts, Tailwind config, favicons, `style.css` link) and update the SEO/canonical/OG tags. Do **not** add a GA4 snippet — [main.js](main.js) injects it after consent.
+1. Copy an existing page's `<head>` (fonts, Tailwind config, favicons, `style.css` link) and update the SEO/canonical/OG tags. Keep the Consent Mode block and the GTM snippet, in that order, and the `<noscript>` iframe after `<body>`. Do **not** add a GA4 snippet — GA4 lives in GTM.
 2. Set `<body data-page="...">` and add a matching entry to `NAV` (or `SERVICES`) in [main.js](main.js) if it belongs in the menu.
 3. Include the `#site-header` / `#site-footer` mount divs and load `main.js` (+ `form.js` only if the page has the quote form).
 4. Add the URL to [sitemap.xml](sitemap.xml).

@@ -17,10 +17,11 @@
     <meta name="twitter:description" content="Données collectées, finalités, conservation, cookies et vos droits RGPD." />
     <meta name="twitter:image" content="https://conteneurdumetal.fr/assets/img/livraison.jpg" />
 
-    <!-- Consent Mode v2 : les quatre signaux sont refuses par defaut, GTM attend
-         500 ms la decision du visiteur. Le choix deja stocke est relu ICI, avant
-         GTM : sinon un visiteur qui a accepte repartirait en "denied" a chaque
-         page. Cle de stockage partagee avec main.js. -->
+    <!-- Consent Mode v2 : les quatre signaux sont refuses par defaut, avant GTM.
+         C'est Axeptio, charge DANS le conteneur, qui envoie le 'consent update'
+         quand le visiteur choisit. Ce defaut reste code en dur ici justement
+         parce qu'Axeptio se charge apres GTM : sans ce filet, un tag pourrait
+         partir avant que le consentement soit connu. -->
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
@@ -33,17 +34,6 @@
         });
         gtag('set', 'url_passthrough', true);
         gtag('set', 'ads_data_redaction', true);
-        try {
-            var saved = JSON.parse(localStorage.getItem('dumetal-consent'));
-            if (saved && saved.value === 'accepted' && Date.now() - saved.at < 1000 * 60 * 60 * 24 * 182) {
-                gtag('consent', 'update', {
-                    ad_storage: 'granted',
-                    analytics_storage: 'granted',
-                    ad_user_data: 'granted',
-                    ad_personalization: 'granted'
-                });
-            }
-        } catch (e) { /* stockage bloque : on reste en refus */ }
     </script>
 
     <!-- Google Tag Manager -->
@@ -121,7 +111,7 @@
             <div>
                 <h2 class="font-serif text-2xl md:text-3xl font-black mb-4 leading-tight">Cookies</h2>
                 <p class="text-[var(--muted)] leading-relaxed mb-4">Le site ne dépose aucun cookie de mesure d'audience ou de publicité sans votre accord préalable. Au premier affichage, un bandeau vous permet d'accepter ou de refuser. Un refus est respecté : rien n'est déposé, et le site fonctionne à l'identique.</p>
-                <p class="text-[var(--muted)] leading-relaxed">Votre choix est mémorisé dans votre navigateur pendant six mois. Pour le modifier, videz les données du site dans les réglages de votre navigateur : le bandeau réapparaîtra à votre prochaine visite.</p>
+                <p class="text-[var(--muted)] leading-relaxed">Votre choix est mémorisé dans votre navigateur. Vous pouvez le modifier à tout moment en rouvrant le gestionnaire de consentement depuis le bandeau, ou en vidant les données du site dans les réglages de votre navigateur.</p>
             </div>
 
             <div>
