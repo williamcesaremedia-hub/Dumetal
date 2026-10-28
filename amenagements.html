@@ -16,6 +16,44 @@
     <meta name="twitter:title" content="Aménagements intérieurs — DUMETAL" />
     <meta name="twitter:description" content="Isolation, électricité, plomberie, revêtements et mobilier : un intérieur fini, confortable et aux normes." />
     <meta name="twitter:image" content="https://conteneurdumetal.fr/assets/img/livraison.jpg" />
+
+    <!-- Consent Mode v2 : les quatre signaux sont refuses par defaut, GTM attend
+         500 ms la decision du visiteur. Le choix deja stocke est relu ICI, avant
+         GTM : sinon un visiteur qui a accepte repartirait en "denied" a chaque
+         page. Cle de stockage partagee avec main.js. -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('consent', 'default', {
+            ad_storage: 'denied',
+            analytics_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+            wait_for_update: 500
+        });
+        gtag('set', 'url_passthrough', true);
+        gtag('set', 'ads_data_redaction', true);
+        try {
+            var saved = JSON.parse(localStorage.getItem('dumetal-consent'));
+            if (saved && saved.value === 'accepted' && Date.now() - saved.at < 1000 * 60 * 60 * 24 * 182) {
+                gtag('consent', 'update', {
+                    ad_storage: 'granted',
+                    analytics_storage: 'granted',
+                    ad_user_data: 'granted',
+                    ad_personalization: 'granted'
+                });
+            }
+        } catch (e) { /* stockage bloque : on reste en refus */ }
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TNJSLC3C');</script>
+    <!-- End Google Tag Manager -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Merriweather:wght@400;700;900&display=swap" rel="stylesheet" />
@@ -28,6 +66,10 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body class="font-sans" data-page="amenagements">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TNJSLC3C"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div id="site-header"></div>
 
     <section class="page-hero pt-28 pb-16 md:pt-32 md:pb-20">

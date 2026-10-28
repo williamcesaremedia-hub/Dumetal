@@ -13,10 +13,6 @@ const NAV = [
     { href: 'contact.html',      label: 'Contact',                 key: 'contact' },
 ];
 
-/* Identifiant GA4 : unique endroit a modifier pour tout le site.
-   Tant qu'il contient XXXX, aucune mesure n'est chargee. */
-const GA_ID = 'G-XXXXXXXXXX';
-
 const CONTACT = {
     email: 'dumetallimay@gmail.com',
     phoneDisplay: '07 49 89 90 77',
@@ -170,9 +166,10 @@ const LOGO = `<span class="inline-flex items-center gap-2.5">
         </a>`;
     document.body.appendChild(fab);
 
-    /* -------- Consentement cookies + mesure d'audience --------
-       Google Analytics n'est charge qu'apres acceptation explicite : sans
-       choix valide, aucun cookie de mesure n'est depose (exigence CNIL). */
+    /* -------- Consentement cookies (Consent Mode v2) --------
+       Le refus des quatre signaux est pose dans le <head> de chaque page, avant
+       GTM. Ce bloc ne fait que transmettre la decision du visiteur : les tags
+       GA4 et Google Ads vivent dans GTM, plus dans ce fichier. */
     const CONSENT_KEY = 'dumetal-consent';
     const CONSENT_MAX_AGE = 1000 * 60 * 60 * 24 * 182;   // 6 mois
 
@@ -198,27 +195,25 @@ const LOGO = `<span class="inline-flex items-center gap-2.5">
         } catch (e) { /* stockage indisponible : le choix vaut pour la session */ }
     };
 
-    const loadAnalytics = () => {
-        if (GA_ID.indexOf('XXXX') !== -1 || window.__gaLoaded) return;
-        window.__gaLoaded = true;
-        const s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
-        document.head.appendChild(s);
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = function () { window.dataLayer.push(arguments); };
-        window.gtag('js', new Date());
-        window.gtag('config', GA_ID, { anonymize_ip: true });
+    const updateConsent = (granted) => {
+        if (typeof window.gtag !== 'function') return;
+        const state = granted ? 'granted' : 'denied';
+        window.gtag('consent', 'update', {
+            ad_storage: state,
+            analytics_storage: state,
+            ad_user_data: state,
+            ad_personalization: state,
+        });
     };
 
     const showConsentBanner = () => {
         const el = document.createElement('div');
         el.className = 'cookie-banner';
         el.setAttribute('role', 'dialog');
-        el.setAttribute('aria-label', "Consentement à la mesure d'audience");
+        el.setAttribute('aria-label', "Consentement aux cookies de mesure et de publicité");
         el.innerHTML = `
             <div class="cookie-inner">
-                <p class="cookie-text">Nous mesurons la fréquentation du site pour l'améliorer. Rien n'est déposé sans votre accord, et le site fonctionne à l'identique si vous refusez. <a href="confidentialite.html">En savoir plus</a></p>
+                <p class="cookie-text">Nous mesurons la fréquentation du site et l'efficacité de nos campagnes publicitaires pour l'améliorer. Rien n'est déposé sans votre accord, et le site fonctionne à l'identique si vous refusez. <a href="confidentialite.html">En savoir plus</a></p>
                 <div class="cookie-actions">
                     <button type="button" class="btn btn-outline" data-consent="refused">Refuser</button>
                     <button type="button" class="btn btn-primary" data-consent="accepted">Accepter</button>
@@ -230,7 +225,7 @@ const LOGO = `<span class="inline-flex items-center gap-2.5">
             btn.addEventListener('click', () => {
                 const value = btn.dataset.consent;
                 writeConsent(value);
-                if (value === 'accepted') loadAnalytics();
+                updateConsent(value === 'accepted');
                 el.remove();
                 document.body.classList.remove('has-consent-banner');
             });
@@ -238,8 +233,8 @@ const LOGO = `<span class="inline-flex items-center gap-2.5">
     };
 
     const consent = readConsent();
-    if (consent === 'accepted') loadAnalytics();
-    else if (consent === null) showConsentBanner();
+    if (consent === null) showConsentBanner();
+    else if (consent === 'refused') updateConsent(false);
 
     /* -------- Slider avant / après -------- */
     document.querySelectorAll('.ba').forEach(ba => {
