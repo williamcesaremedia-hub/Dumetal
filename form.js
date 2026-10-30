@@ -27,7 +27,7 @@ const FALLBACK_EMAIL = 'dumetallimay@gmail.com';
     if (!form) return;
 
     const steps       = Array.from(form.querySelectorAll('.form-step'));
-    const totalSteps  = 6; // L'étape 7 est la confirmation
+    const totalSteps  = 5; // L'étape 6 est la confirmation
     const prevBtn     = document.getElementById('prev-btn');
     const nextBtn     = document.getElementById('next-btn');
     const submitBtn   = document.getElementById('submit-btn');
@@ -42,9 +42,8 @@ const FALLBACK_EMAIL = 'dumetallimay@gmail.com';
         1: 'Votre besoin',
         2: 'Usage prévu',
         3: 'Taille souhaitée',
-        4: 'Options & finitions',
-        5: 'Lieu & projet',
-        6: 'Vos coordonnées',
+        4: 'Lieu & projet',
+        5: 'Vos coordonnées',
     };
 
     let currentStep = 1;
@@ -220,7 +219,6 @@ const FALLBACK_EMAIL = 'dumetallimay@gmail.com';
                 lead_need_type: data.need_type,
                 lead_usage: data.usage,
                 lead_size: data.size,
-                lead_options: data.options,
                 lead_status: data.status,
                 lead_postal_code: data.postal_code,
             });
@@ -243,10 +241,8 @@ const FALLBACK_EMAIL = 'dumetallimay@gmail.com';
         delete data.website;   // champ piege, jamais transmis
 
         // Champs à choix multiples (cases à cocher)
-        const usages  = fd.getAll('usage');
-        const options = fd.getAll('options');
-        data.usage   = usages.length  ? usages.join(', ')  : '-';
-        data.options = options.length ? options.join(', ') : '-';
+        const usages = fd.getAll('usage');
+        data.usage   = usages.length ? usages.join(', ') : '-';
 
         data.form         = 'devis';   // route suivie dans le scenario Make
         data.source       = 'site-conteneurs-maritimes';
@@ -281,7 +277,6 @@ const FALLBACK_EMAIL = 'dumetallimay@gmail.com';
 Besoin        : ${data.need_type || '-'}
 Usage prévu   : ${data.usage || '-'}
 Taille        : ${data.size || '-'}
-Options       : ${data.options || '-'}
 
 Code postal   : ${data.postal_code || '-'}
 Ville         : ${data.city || '-'}

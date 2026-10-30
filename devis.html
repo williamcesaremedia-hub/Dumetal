@@ -75,11 +75,11 @@
             <div class="rounded-3xl border border-[var(--line)] bg-white p-6 md:p-10 shadow-[0_30px_80px_-40px_rgba(31,36,33,0.5)]">
                 <div class="mb-9">
                     <div class="flex items-center justify-between text-xs text-[var(--muted)] mb-3 tracking-[0.12em] uppercase font-semibold">
-                        <span id="step-label">Étape 1 sur 6 — Votre besoin</span>
+                        <span id="step-label">Étape 1 sur 5 — Votre besoin</span>
                         <span id="step-counter">1 / 6</span>
                     </div>
                     <div class="h-1.5 w-full bg-[var(--bg-alt)] rounded-full overflow-hidden">
-                        <div id="progress-bar" class="h-full bg-green transition-all duration-500" style="width:16.6%;"></div>
+                        <div id="progress-bar" class="h-full bg-green transition-all duration-500" style="width:20%;"></div>
                     </div>
                 </div>
 
@@ -126,27 +126,8 @@
                             <label class="choice-card"><input type="radio" name="size" value="Je ne sais pas" required /><span class="choice-title">Je ne sais pas</span><span class="choice-sub">Conseillez-moi</span></label>
                         </div>
                     </div>
-                    <!-- STEP 4 — Options & finitions (multi) -->
+                    <!-- STEP 4 — Lieu & projet -->
                     <div class="form-step" data-step="4">
-                        <label class="form-label mb-2">Options & finitions souhaitées</label>
-                        <p class="text-sm text-[var(--muted)] mb-4">Cochez tout ce qui vous intéresse — rien n'est définitif, on affine ensemble.</p>
-                        <div class="choice-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
-                            <label class="choice-card"><input type="checkbox" name="options" value="Isolation thermique & phonique" /><span class="choice-title">Isolation thermique & phonique</span></label>
-                            <label class="choice-card"><input type="checkbox" name="options" value="Électricité + éclairage LED" /><span class="choice-title">Électricité + éclairage LED</span></label>
-                            <label class="choice-card"><input type="checkbox" name="options" value="Plomberie / point d'eau" /><span class="choice-title">Plomberie / point d'eau</span></label>
-                            <label class="choice-card"><input type="checkbox" name="options" value="Chauffage / climatisation" /><span class="choice-title">Chauffage / climatisation</span></label>
-                            <label class="choice-card"><input type="checkbox" name="options" value="Baie vitrée / fenêtres" /><span class="choice-title">Baie vitrée / fenêtres</span></label>
-                            <label class="choice-card"><input type="checkbox" name="options" value="Porte(s) supplémentaire(s)" /><span class="choice-title">Porte(s) supplémentaire(s)</span></label>
-                            <label class="choice-card"><input type="checkbox" name="options" value="Bardage bois" /><span class="choice-title">Bardage bois</span></label>
-                            <label class="choice-card"><input type="checkbox" name="options" value="Revêtement de sol" /><span class="choice-title">Revêtement de sol</span></label>
-                            <label class="choice-card"><input type="checkbox" name="options" value="Peinture extérieure (couleur au choix)" /><span class="choice-title">Peinture extérieure</span><span class="choice-sub">Couleur au choix</span></label>
-                            <label class="choice-card"><input type="checkbox" name="options" value="Mobilier intégré / agencement" /><span class="choice-title">Mobilier intégré</span><span class="choice-sub">Agencement sur mesure</span></label>
-                            <label class="choice-card"><input type="checkbox" name="options" value="Toiture vitrée / végétalisée" /><span class="choice-title">Toiture vitrée / végétalisée</span></label>
-                            <label class="choice-card"><input type="checkbox" name="options" value="Bloc sanitaire (WC / douche)" /><span class="choice-title">Bloc sanitaire</span><span class="choice-sub">WC / douche</span></label>
-                        </div>
-                    </div>
-                    <!-- STEP 5 — Lieu & projet -->
-                    <div class="form-step" data-step="5">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div><label class="form-label">Code postal de livraison *</label><input type="text" name="postal_code" class="form-input" placeholder="75008" inputmode="numeric" required /></div>
                             <div><label class="form-label">Ville <span class="text-[var(--muted)] normal-case text-xs">(optionnel)</span></label><input type="text" name="city" class="form-input" placeholder="Paris" /></div>
@@ -180,8 +161,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- STEP 6 — Coordonnées -->
-                    <div class="form-step" data-step="6">
+                    <!-- STEP 5 — Coordonnées -->
+                    <div class="form-step" data-step="5">
                         <div class="space-y-5">
                             <div>
                                 <label class="form-label mb-3">Vous êtes : *</label>
@@ -205,7 +186,7 @@
                         </div>
                     </div>
                     <!-- Confirmation -->
-                    <div class="form-step" data-step="7">
+                    <div class="form-step" data-step="6">
                         <div class="text-center py-10">
                             <div class="mx-auto w-16 h-16 rounded-full bg-green flex items-center justify-center mb-6">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
