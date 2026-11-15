@@ -765,8 +765,26 @@ body.se-lock {
     z-index: 60;
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
     gap: 0.65rem;
 }
+/* Pastille devis : volontairement a droite, le widget Axeptio occupe le coin gauche. */
+.fab-devis {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.8rem 1.1rem;
+    border-radius: 9999px;
+    background: var(--green);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1;
+    white-space: nowrap;
+    box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+.fab-devis:hover { transform: scale(1.05); filter: brightness(1.08); }
 .fab-btn {
     width: 52px; height: 52px;
     border-radius: 9999px;

@@ -157,14 +157,30 @@ const LOGO = `<span class="inline-flex items-center gap-2.5">
     ldScript.textContent = JSON.stringify(ld);
     document.head.appendChild(ldScript);
 
-    /* -------- Bouton d'appel flottant (mobile + desktop) -------- */
+    /* -------- Actions flottantes : devis + appel, sur toutes les pages -------- */
     const fab = document.createElement('div');
     fab.className = 'fab';
-    fab.innerHTML = `
-        <a class="fab-btn fab-tel" href="tel:${CONTACT.phoneTel}" aria-label="Nous appeler">
+    // Inutile de proposer le devis a quelqu'un qui remplit deja le formulaire.
+    const fabDevis = current === 'devis' ? '' : `
+        <a class="fab-devis" href="devis.html" data-cta="cta_devis">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 14h6"/><path d="M9 18h4"/></svg>
+            <span>Devis gratuit</span>
+        </a>`;
+    fab.innerHTML = `${fabDevis}
+        <a class="fab-btn fab-tel" href="tel:${CONTACT.phoneTel}" aria-label="Nous appeler" data-cta="click_to_call">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         </a>`;
     document.body.appendChild(fab);
+
+    // Les clics telephone et les CTA devis partent dans le dataLayer : ce sont
+    // les seules conversions du site qui ne passent pas par un formulaire.
+    // Ecoute au niveau du document pour couvrir aussi les boutons des pages.
+    document.addEventListener('click', (e) => {
+        const link = e.target instanceof Element ? e.target.closest('[data-cta]') : null;
+        if (!link) return;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: link.dataset.cta });
+    });
 
     /* -------- Slider avant / après -------- */
     document.querySelectorAll('.ba').forEach(ba => {
